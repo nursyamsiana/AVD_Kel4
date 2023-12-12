@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <!--From https://codepen.io/frytyler/pen/EGdtg-->
+  <head>
+    <meta charset="UTF-8" />
+    <title>PengaruhQris</title>
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+
+  <body>
+    <div class="container contact-form">
+      <form action="{{ url_for('predict')}}" method="post">
+        <h3>Pengaruh Qris terhadap Perilaku Konsumtif Masyarakat</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <p>Status pekerjaan</p>
+              <p>(0 = sedang studi, 1 = bekerja, 2=lainnya)</p>
+              <input
+                type="text"
+                name="Status pekerjaan"
+                class="form-control"
+                placeholder="Status pekerjaan (0-2)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <p>Pendapatan tiap bulan</p>
+              <p>(0 = < 2 juta, 1 = 2-5 juta, 2 = 5-10 juta, 3 = >10 juta</2juta>)</p>
+              <input
+                type="text"
+                name="Pendapatan per bulan"
+                class="form-control"
+                placeholder="Pendapatan per bulan (0-3)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <p>Seberapa sering Anda menggunakan QRIS dalam transaksi sehari-hari?</p>
+              <p>(1 = Tidak pernah 2 = Kadang-kadang, 3 = Cukup sering, 4 = Sering, 5 = Sangat sering)</p>
+              <input
+                type="text"
+                name="Frekuensi penggunaan"
+                class="form-control"
+                placeholder="Frekuensi penggunaan (1-5)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <p>Apakah Anda pernah mengalami masalah keamanan (seperti kebocoran pin) saat menggunakan QRIS?
+              </p>
+              <p>(0 = Tidak, 1 = Tidak yakin , 2 = Ya)</p>
+              <input
+                type="text"
+                name="Keamanan penggunaan"
+                class="form-control"
+                placeholder="Keamanan penggunaan (0-2)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <p>Apakah Anda cenderung menghabiskan lebih banyak uang setelah menggunakan QRIS?</p>
+              <p>(0 = Tidak, 1 = Tidak yakin , 2 = Ya)</p>
+              <input
+                type="text"
+                name="Kecenderungan"
+                class="form-control"
+                placeholder="Kecenderungan (0-2)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <p>Bagaimana menurut Anda pengaruh QRIS terhadap pola pengeluaran bulanan Anda?</p>
+              <p>(0 = Menurun, 1 = Tidak berpengaruh, 2 = Meningkat)</p>
+              <input
+                type="text"
+                name="Pola pengeluaran"
+                class="form-control"
+                placeholder="Pola pengeluaran (0-2)"
+                required="required"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-large">
+              Predict
+            </button>
+          </div>
+          <div class="col-md-6">
+            <h3>
+              Hasil Prediksi : <br />
+              {{ prediction_text }}
+            </h3>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Form Pengaruh QRIS</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <div class="testbox">
+      <form action="{{url_for('predict')}}" method="post">
+        <h1>Pengaruh QRIS terhadap Perilaku Konsumtif</h1>
+        <p>Isikan data sesuai dengan yang Anda alami.</p>
+       
+        <h4>Status pekerjaan</h4>
+        <div class="question-answer">
+          <label><input type="radio" value="0" name="Dine" > Sedang studi</label>
+          <label><input type="radio" value="1" name="Dine" > Bekerja</label>
+          <label><input type="radio" value="2" name="Dine" > Lainnya</label>
+        </div>
+
+          <tr>
+            <td class="first-col">Pendapatan per bulan</td>
+            <td><input type="radio" value="0" name="Food" >kurang dari 2 juta</td>
+            <td><input type="radio" value="1" name="Food" >antara 2-5 juta</td>
+            <td><input type="radio" value="2" name="Food" >antara 5-10 juta</td>
+            <td><input type="radio" value="3" name="Food" >lebih dari 10 juta</td>
+          </tr>
+          <tr>
+            <td class="first-col">Seberapa sering Anda menggunakan QRIS dalam transaksi sehari-hari?</td>
+            <td><input type="radio" value="0" name="Food" >Tidak pernah</td>
+            <td><input type="radio" value="1" name="Food" >Cukup sering</td>
+            <td><input type="radio" value="2" name="Food" >Sering</td>
+            <td><input type="radio" value="3" name="Food" />Sangat sering</td>
+          </tr>
+          <tr>
+            <td class="first-col">Seberapa percaya Anda terhadap keamanan QRIS dalam melakukan transaksi?</td>
+            <td><input type="radio" value="0" name="Service" >Sangat tidak percaya</td>
+            <td><input type="radio" value="1" name="Service" >Tidak percaya</td>
+            <td><input type="radio" value="2" name="Service" >Percaya</td>
+            <td><input type="radio" value="3" name="Service" >Sangat percaya</td>
+          </tr>
+          <tr>
+            <td class="first-col">Apakah penggunaan QRIS meningkatkan kecenderungan Anda untuk berbelanja secara impulsif?</td>
+            <td><input type="radio" value="0" name="Speed" >Ya</td>
+            <td><input type="radio" value="1" name="Speed" >Tidak</td>
+            <td><input type="radio" value="2" name="Speed" >Tidak yakin</td>
+          </tr>
+          <tr>
+            <td class="first-col">Bagaimana menurut Anda pengaruh QRIS terhadap pola pengeluaran bulanan Anda?
+            </td>
+            <td><input type="radio" value="0" name="Price" >Menurun</td>
+            <td><input type="radio" value="1" name="Price" >Tidak berpengaruh</td>
+            <td><input type="radio" value="2" name="Price" >Meningkat</td>
+          </tr>
+      
+        <div class="btn-block">
+          <button type="submit" href="/">Prediksi</button>
+          {{prediction_text}}
+        </div>
+      </form>
+    </div>
+  </body>
+</html> -->
+<!-- <!DOCTYPE html>
+<html> -->
+  <!--From https://codepen.io/frytyler/pen/EGdtg-->
+  <!-- <head>
+    <meta charset="UTF-8" />
+    <title>PengaruhQris</title>
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container contact-form">
+      <div class="contact-image">
+      </div>
+      <form action="{{ url_for('predict')}}" method="post">
+        <h3>Pengaruh Qris terhadap Perilaku Konsumtif Masyarakat</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                type="text"
+                name="Status pekerjaan"
+                class="form-control"
+                placeholder="Status pekerjaan (0-2)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="Pendapatan per bulan"
+                class="form-control"
+                placeholder="Pendapatan per bulan (0-3)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="Frekuensi penggunaan"
+                class="form-control"
+                placeholder="Frekuensi penggunaan (0-3)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="Keamanan penggunaan"
+                class="form-control"
+                placeholder="Keamanan penggunaan (0-2)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="Kecenderungan"
+                class="form-control"
+                placeholder="Kecenderungan (0-3)"
+                required="required"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="Pola pengeluaran"
+                class="form-control"
+                placeholder="Pola pengeluaran (0-2)"
+                required="required"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-large">
+              Predict
+            </button>
+          </div>
+          <div class="col-md-6">
+            <h3>
+              Hasil Prediksi : <br />
+              {{ prediction_text }}
+            </h3>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </body>
+</html>
+ -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Form Pengaruh QRIS</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+  </head>
+  <body>
+    <div class="testbox">
+      <form action="{{url_for('predict')}}" method="post">
+        <h1>Pengaruh QRIS terhadap Perilaku Konsumtif</h1>
+        <p>Isikan  data sesuai dengan yang Anda alami.</p>
+       
+        <h4>Status pekerjaan</h4>
+        <div class="question-answer">
+          <label><input type="radio" value="0" name="Dine" /> Sedang studi</label>
+          <label><input type="radio" value="1" name="Dine" /> Bekerja</label>
+          <label><input type="radio" value="2" name="Dine" /> Lainnya</label>
+        </div>
+
+          <tr>
+            <td class="first-col">Pendapatan per bulan</td>
+            <td><input type="radio" value="0" name="Food" />kurang dari 2 juta</td>
+            <td><input type="radio" value="1" name="Food" />antara 2-5 juta</td>
+            <td><input type="radio" value="2" name="Food" />antara 5-10 juta</td>
+            <td><input type="radio" value="3" name="Food" />lebih dari 10 juta</td>
+          </tr>
+          <tr>
+            <td class="first-col">Seberapa sering Anda menggunakan QRIS dalam transaksi sehari-hari?</td>
+            <td><input type="radio" value="0" name="Food" />Tidak pernah</td>
+            <td><input type="radio" value="1" name="Food" />Cukup sering</td>
+            <td><input type="radio" value="2" name="Food" />Sering</td>
+            <td><input type="radio" value="3" name="Food" />Sangat sering</td>
+          </tr>
+          <tr>
+            <td class="first-col">Seberapa percaya Anda terhadap keamanan QRIS dalam melakukan transaksi?</td>
+            <td><input type="radio" value="0" name="Service" />Sangat tidak percaya</td>
+            <td><input type="radio" value="1" name="Service" />Tidak percaya</td>
+            <td><input type="radio" value="2" name="Service" />Percaya</td>
+            <td><input type="radio" value="3" name="Service" />Sangat percaya</td>
+          </tr>
+          <tr>
+            <td class="first-col">Apakah penggunaan QRIS meningkatkan kecenderungan Anda untuk berbelanja secara impulsif?</td>
+            <td><input type="radio" value="0" name="Speed" />Ya</td>
+            <td><input type="radio" value="1" name="Speed" />Tidak</td>
+            <td><input type="radio" value="2" name="Speed" />Tidak yakin</td>
+          </tr>
+          <tr>
+            <td class="first-col">Bagaimana menurut Anda pengaruh QRIS terhadap pola pengeluaran bulanan Anda?
+            </td>
+            <td><input type="radio" value="0" name="Price" />Menurun</td>
+            <td><input type="radio" value="1" name="Price" />Tidak berpengaruh</td>
+            <td><input type="radio" value="2" name="Price" />Meningkat</td>
+          </tr>
+      
+        <div class="btn-block">
+          <button type="submit" href="/">Prediksi</button>
+          {{prediction_text}}
+        </div>
+      </form>
+    </div>
+  </body>
+</html> -->
